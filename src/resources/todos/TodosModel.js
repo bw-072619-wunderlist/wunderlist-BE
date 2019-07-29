@@ -16,4 +16,11 @@ export class TodosModel {
     }
     return db('todos');
   }
+
+  static update = (id, changes) => {
+    return db('todos')
+      .update(changes, '*')
+      .where({ id })
+      .first();
+  }
 }
