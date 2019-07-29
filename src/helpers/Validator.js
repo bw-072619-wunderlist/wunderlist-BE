@@ -32,4 +32,32 @@ export class Validator {
     }
     next();
   }
+
+  static validateTaskObject = (task) => {
+    if(!task.name || task.name.trim() === '') {
+      return {
+        pass: false,
+        message: 'Missing required task name field'
+      }
+    }
+    if(task.notes) {
+      if(task.notes.trim() === '') {
+        return {
+          pass: false,
+          message: 'Missing required notes name field'
+        }
+      }
+    }
+    if(task.completed) {
+      if(task.completed !== true && task.completed !== false) {
+        return {
+          pass: false,
+          message: 'completed field can only hold boolean value'
+        }
+      }
+    }
+    return {
+      pass: true
+    };
+  }
 }
