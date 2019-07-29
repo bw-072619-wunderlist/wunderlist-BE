@@ -6,4 +6,12 @@ export class TasksModel {
       .insert(task, '*')
       .first();
   }
+
+  static read = (todo_id = null) => {
+    if(todo_id) {
+      return db('tasks')
+        .where({ todo_id });
+    }
+    return db('tasks');
+  }
 }
