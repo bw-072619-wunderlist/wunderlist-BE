@@ -8,13 +8,14 @@ export class TodosModel {
       .first();
   }
 
-  static read = (id = null) => {
+  static read = (user_id, id = null) => {
     if(id) {
       return db('todos')
-        .where({ id })
+        .where({ user_id, id })
         .first();
     }
-    return db('todos');
+    return db('todos')
+      .where({ user_id });
   }
 
   static update = (id, changes) => {

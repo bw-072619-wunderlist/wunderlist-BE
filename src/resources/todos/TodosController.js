@@ -1,6 +1,6 @@
 import { TodosModel as Todos } from './TodosModel';
 import { TasksModel as Tasks } from '../tasks/TasksModel';
-import { isArray } from 'util';
+import { isArray, isObject } from 'util';
 
 export class TodosController {
   static create = async (req, res, next) => {
@@ -26,6 +26,31 @@ export class TodosController {
         .json({
           ...todo,
           tasks: tasksList
+        });
+    } catch(error) {
+      next(error);
+    }
+  }
+
+  static read = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const todos = id? await Todos.read(req.user.id, id) : await Todos.read(req.user.id);
+      if(isArray(todos) && todos.length > 0) {
+        return res.status(200)
+          .json(todos);
+      }
+      if(isObject(todos) && todos.id) {
+        const tasks = await Tasks.read(todos.id);
+        return res.status(200)
+          .json({
+            ...todos,
+            tasks
+          });
+      }
+      res.status(404)
+        .json({
+          message: 'Todo with the supplied todo_id does not exist'
         });
     } catch(error) {
       next(error);
