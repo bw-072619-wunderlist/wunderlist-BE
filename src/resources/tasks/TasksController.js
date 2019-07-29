@@ -35,4 +35,24 @@ export class TasksController {
       next(error);
     }
   }
+
+  static update = async (req, res, next) => {
+    try {
+      const updated = await Tasks.update(req.params.id, req.body);
+      if(updated && updated.name) {
+        res.status(200)
+          .json({
+            message: 'Successful task update',
+            updated
+          });
+      } else {
+        res.status(404)
+          .json({
+            message: 'Task with the supplied id does not exist'
+          });
+      }
+    } catch(error) {
+      next(error);
+    }
+  }
 }
