@@ -1,6 +1,6 @@
 // Update with your config settings.
 
-module.exports = {
+export const knexConfig = {
 
   development: {
     client: 'postgresql',
