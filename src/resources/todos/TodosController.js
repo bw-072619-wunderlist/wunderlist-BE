@@ -56,4 +56,23 @@ export class TodosController {
       next(error);
     }
   }
+
+  static update = async (req, res, next) => {
+    try {
+      const updated = await Todos.update(req.params.id, req.body);
+      if(updated && updated.id) {
+        return res.status(200)
+          .json({
+            message: 'Successful todo update',
+            updated
+          });
+      }
+      res.status(404)
+        .json({
+          message: 'Todo with the supplied id does not exist'
+        });
+    } catch(error) {
+      next(error);
+    }
+  }
 }
