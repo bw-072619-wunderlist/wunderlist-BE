@@ -7,4 +7,13 @@ export class TodosModel {
       .returning('*')
       .first();
   }
+
+  static read = (id = null) => {
+    if(id) {
+      return db('todos')
+        .where({ id })
+        .first();
+    }
+    return db('todos');
+  }
 }
