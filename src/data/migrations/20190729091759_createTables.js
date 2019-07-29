@@ -3,7 +3,10 @@ exports.up = function(knex) {
   return knex.schema
     .createTable('users', tbl => {
       tbl.increments();
-      tbl.text('email', 128)
+      tbl.text('username')
+        .unique()
+        .notNullable();
+      tbl.text('email')
         .unique()
         .notNullable();
       tbl.text('password')
@@ -23,11 +26,13 @@ exports.up = function(knex) {
       tbl.text('description');
       tbl.boolean('completed')
         .defaultTo(false);
+      tbl.boolean('deleted')
+        .defaultTo(false);
       tbl.dateTime('scheduled_at')
         .defaultTo(null);
       tbl.text('repeat')
         .defaultTo('no-repeat');
-      tbl.timestamp();
+      tbl.timestamps();
       tbl.unique(['user_id', 'title']);
     })
     .createTable('tasks', tbl => {
@@ -44,8 +49,21 @@ exports.up = function(knex) {
       tbl.text('notes');
       tbl.boolean('completed')
         .defaultTo(false);
-      tbl.timestamp();
+      tbl.timestamps();
       tbl.unique(['todo_id', 'name']);
+    })
+    .createTable('histories', tbl => {
+      tbl.increments();
+      tbl.integer('todo_id')
+        .unsigned()
+        .notNullable()
+        .references('id')
+        .inTable('todos')
+        .onUpdate('CASCADE')
+        .onDelete('CASCADE');
+      tbl.timestamp('completed_at')
+        .defaultTo(knex.fn.now());
+      tbl.unique(['todo_id', 'completed_at']);
     })
     .createTable('shares', tbl => {
       tbl.increments();
@@ -72,5 +90,6 @@ exports.down = function(knex) {
     .dropTableIfExists('users')
     .dropTableIfExists('todos')
     .dropTableIfExists('tasks')
+    .dropTableIfExists('histories')
     .dropTableIfExists('shares');
 };
