@@ -14,4 +14,11 @@ export class TasksModel {
     }
     return db('tasks');
   }
+
+  static update = (id, changes) => {
+    return db('tasks')
+      .update(changes, '*')
+      .where({ id })
+      .first();
+  }
 }
