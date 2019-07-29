@@ -21,4 +21,12 @@ export class TasksModel {
       .where({ id })
       .first();
   }
+
+  static delete = (id) => {
+    return db('tasks')
+      .delete()
+      .where({ id })
+      .returning('*')
+      .first();
+  }
 }
