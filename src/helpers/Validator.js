@@ -120,4 +120,24 @@ export class Validator {
     }
     next();
   }
+
+  static validateTasks = (req, res, next) => {
+    const tasks = [...req.body];
+    if(!Array.isArray(tasks) || tasks.length < 1) {
+      return res.status(400)
+        .json({
+          message: 'tasks cannot be empty list'
+        });
+    }
+    for(let i = 0; i < tasks.length; i++) {
+      const check = Validator.validateTaskObject(tasks[i]);
+      if(!check.pass) {
+        return res.status(400)
+          .json({
+            message: check.message
+          });
+      }
+    }
+    next();
+  }
 }
