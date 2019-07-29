@@ -40,17 +40,35 @@ export class TasksController {
     try {
       const updated = await Tasks.update(req.params.id, req.body);
       if(updated && updated.name) {
-        res.status(200)
+        return res.status(200)
           .json({
             message: 'Successful task update',
             updated
           });
-      } else {
-        res.status(404)
+      }
+      res.status(404)
+        .json({
+          message: 'Task with the supplied id does not exist'
+        });
+    } catch(error) {
+      next(error);
+    }
+  }
+
+  static delete = async (req, res, next) => {
+    try {
+      const deleted = await Tasks.delete(req.params.id);
+      if(deleted && deleted.name) {
+        return res.status(200)
           .json({
-            message: 'Task with the supplied id does not exist'
+            message: 'Successful task deletion',
+            deleted
           });
       }
+      res.status(404)
+        .json({
+          message: 'Task with the supplied id does not exist'
+        });
     } catch(error) {
       next(error);
     }
