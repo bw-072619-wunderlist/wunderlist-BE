@@ -23,4 +23,12 @@ export class TodosModel {
       .where({ id })
       .first();
   }
+
+  static delete = (id) => {
+    return db('todos')
+      .delete()
+      .where({ id })
+      .returning('*')
+      .first();
+  }
 }
