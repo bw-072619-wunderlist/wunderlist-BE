@@ -24,7 +24,7 @@ exports.up = function(knex) {
       tbl.boolean('completed')
         .defaultTo(false);
       tbl.dateTime('scheduled_at')
-        .notNullable();
+        .defaultTo(null);
       tbl.text('repeat')
         .defaultTo('no-repeat');
       tbl.timestamp();

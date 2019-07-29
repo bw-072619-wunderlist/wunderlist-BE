@@ -36,7 +36,8 @@ export class UsersController {
           const token = jwt.sign(user, 'WUE6nnw#j83-UWNJWGfsuj#*h', { expiresIn: '1d' });
           return res.status(201)
             .json({
-              ...user,
+              id: user.id,
+              email: user.email,
               token
             });
         } else {
