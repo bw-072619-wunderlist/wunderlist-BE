@@ -75,4 +75,23 @@ export class TodosController {
       next(error);
     }
   }
+
+  static delete = async (req, res, next) => {
+    try {
+      const deleted = await Todos.delete(req.params.id);
+      if(deleted && deleted.id) {
+        return res.status(200)
+          .json({
+            message: 'Successful todo deletion',
+            deleted
+          });
+      }
+      res.status(404)
+        .json({
+          message: 'Todo with the supplied id does not exist'
+        });
+    } catch(error) {
+      next(error);
+    }
+  }
 }
