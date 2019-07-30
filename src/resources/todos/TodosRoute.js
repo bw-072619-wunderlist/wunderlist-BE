@@ -6,6 +6,7 @@ import { TodosController as Todos } from './TodosController';
 const router = express.Router();
 
 router.post('/', Auths.authenticate, Validator.validateTodo, Todos.create);
+router.get('/', Auths.authenticate, Todos.read);
 router.use(Validator.validateId);
 
 router.post('/:id/tasks', Auths.authenticate, Validator.validateTasks, Todos.addTodoTask);
