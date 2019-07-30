@@ -4,8 +4,7 @@ export class TodosModel {
   static create(todo) {
     return db('todos')
       .insert(todo)
-      .returning('*')
-      .first();
+      .returning('*');
   }
 
   static read(user_id, id = null) {
@@ -21,15 +20,13 @@ export class TodosModel {
   static update(id, changes) {
     return db('todos')
       .update(changes, '*')
-      .where({ id })
-      .first();
+      .where({ id });
   }
 
   static delete(id) {
     return db('todos')
       .delete()
       .where({ id })
-      .returning('*')
-      .first();
+      .returning('*');
   }
 }

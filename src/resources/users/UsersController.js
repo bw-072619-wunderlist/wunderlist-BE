@@ -12,14 +12,13 @@ export class UsersController {
         ...req.body,
         password: hashedPassword
       });
-      if(user && user.email) {
-        const token = jwt.sign(user, 'WUE6nnw#j83-UWNJWGfsuj#*h', { expiresIn: '1d' });
-        return res.status(201)
-          .json({
-            ...user,
-            token
-          });
-      }
+      delete user[0].password;
+      const token = jwt.sign({...user[0]}, 'WUE6nnw#j83-UWNJWGfsuj#*h', { expiresIn: '1d' });
+      return res.status(201)
+        .json({
+          ...user[0],
+          token
+        });
     } catch(error) {
       next(error);
     }
@@ -37,6 +36,7 @@ export class UsersController {
           return res.status(201)
             .json({
               id: user.id,
+              username: user.username,
               email: user.email,
               token
             });

@@ -6,7 +6,7 @@ import { TasksController as Tasks } from './TasksController';
 const router = express.Router();
 
 router.get('/', Auths.authenticate, Tasks.read);
-router.use(Validator.validateId);
+router.use('/:id', Validator.validateId);
 
 router.get('/:id', Auths.authenticate, Tasks.read);
 router.put('/:id', Auths.authenticate, Validator.validateTask, Tasks.update);

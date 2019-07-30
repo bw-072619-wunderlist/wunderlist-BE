@@ -18,13 +18,13 @@ export class TodosController {
       if(tasks) {
         tasks = tasks.map(task => ({
           ...task,
-          todo_id: todo.id
+          todo_id: todo[0].id
         }));
         tasksList = await Tasks.create(tasks);
       }
       res.status(201)
         .json({
-          ...todo,
+          ...todo[0],
           tasks: tasksList
         });
     } catch(error) {
@@ -60,11 +60,11 @@ export class TodosController {
   static async update(req, res, next) {
     try {
       const updated = await Todos.update(req.params.id, req.body);
-      if(updated && updated.id) {
+      if(updated[0] && updated[0].id) {
         return res.status(200)
           .json({
             message: 'Successful todo update',
-            updated
+            updated: updated[0]
           });
       }
       res.status(404)
@@ -78,12 +78,12 @@ export class TodosController {
 
   static async delete(req, res, next) {
     try {
-      const deleted = await Todos.update(req.params.id, req.body);
-      if(deleted && deleted.id) {
+      const deleted = await Todos.update(req.params.id, { deleted: true });
+      if(deleted[0] && deleted[0].id) {
         return res.status(200)
           .json({
             message: 'Successful todo delete toggle',
-            deleted
+            deleted: deleted[0]
           });
       }
       res.status(404)

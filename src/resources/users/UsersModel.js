@@ -4,7 +4,7 @@ export class UsersModel {
   static create(user) {
     return db('users')
       .insert(user)
-      .returning('id', 'email');
+      .returning('*');
   }
 
   static read(email = null) {
@@ -14,6 +14,6 @@ export class UsersModel {
         .first();
     }
     return db('users')
-      .select('id', 'email');
+      .select('id', 'username', 'email');
   }
 }

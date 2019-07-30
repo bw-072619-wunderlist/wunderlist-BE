@@ -3,7 +3,7 @@ import { isArray } from "util";
 export class Validator {
   static validateId(req, res, next) {
     const { id } = req.params;
-    if(!Number.isInteger(id) || Number.parseInt(id, 10) <= 0) {
+    if(!RegExp(/^[0-9.]+$/).test(id)) {
       return res.status(400)
         .json({
           message: 'Invalid id in URL'
@@ -117,19 +117,21 @@ export class Validator {
           });
       }
     }
-    if(!Array.isArray(tasks) || tasks.length < 1) {
-      return res.status(400)
-        .json({
-          message: 'tasks field cannot be empty list'
-        });
-    }
-    for(let i = 0; i < tasks.length; i++) {
-      const check = Validator.validateTaskObject(tasks[i]);
-      if(!check.pass) {
+    if(tasks) {
+      if(!Array.isArray(tasks) || tasks.length < 1) {
         return res.status(400)
           .json({
-            message: check.message
+            message: 'tasks field cannot be empty list'
           });
+      }
+      for(let i = 0; i < tasks.length; i++) {
+        const check = Validator.validateTaskObject(tasks[i]);
+        if(!check.pass) {
+          return res.status(400)
+            .json({
+              message: check.message
+            });
+        }
       }
     }
     next();

@@ -32,7 +32,7 @@ exports.up = function(knex) {
         .defaultTo(null);
       tbl.text('repeat')
         .defaultTo('no-repeat');
-      tbl.timestamps();
+      tbl.timestamps(false, true);
       tbl.unique(['user_id', 'title']);
     })
     .createTable('tasks', tbl => {
@@ -49,7 +49,7 @@ exports.up = function(knex) {
       tbl.text('notes');
       tbl.boolean('completed')
         .defaultTo(false);
-      tbl.timestamps();
+      tbl.timestamps(false, true);
       tbl.unique(['todo_id', 'name']);
     })
     .createTable('histories', tbl => {
@@ -87,9 +87,9 @@ exports.up = function(knex) {
 
 exports.down = function(knex) {
   return knex.schema
-    .dropTableIfExists('users')
-    .dropTableIfExists('todos')
-    .dropTableIfExists('tasks')
-    .dropTableIfExists('histories')
-    .dropTableIfExists('shares');
+  .dropTableIfExists('shares')
+  .dropTableIfExists('histories')
+  .dropTableIfExists('tasks')
+  .dropTableIfExists('todos')
+  .dropTableIfExists('users');
 };
