@@ -2,6 +2,8 @@ import { UsersModel as Users } from './UsersModel';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
+const secret = process.env.JWT_SECRET || 'shuy&@iwhqGSYHW8213TEB57';
+
 export class UsersController {
   static async register(req, res, next) {
     try {
@@ -13,7 +15,7 @@ export class UsersController {
         password: hashedPassword
       });
       delete user[0].password;
-      const token = jwt.sign({...user[0]}, 'WUE6nnw#j83-UWNJWGfsuj#*h', { expiresIn: '1d' });
+      const token = jwt.sign({...user[0]}, secret, { expiresIn: '1d' });
       return res.status(201)
         .json({
           ...user[0],
@@ -32,7 +34,7 @@ export class UsersController {
       if(user && user.email) {
         const isMatch = await bcrypt.compare(password, user.password);
         if(isMatch) {
-          const token = jwt.sign(user, 'WUE6nnw#j83-UWNJWGfsuj#*h', { expiresIn: '1d' });
+          const token = jwt.sign(user, secret, { expiresIn: '1d' });
           return res.status(201)
             .json({
               id: user.id,
