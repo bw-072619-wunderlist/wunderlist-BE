@@ -154,4 +154,16 @@ export class Validator {
     }
     next();
   }
+
+  static validateTask = (req, res, next) => {
+    const task = {...req.body};
+    const check = Validator.validateTaskObject(task);
+    if(!check.pass) {
+      return res.status(400)
+        .json({
+          message: check.message
+        });
+    }
+    next();
+  }
 }
