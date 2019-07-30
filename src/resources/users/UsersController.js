@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 export class UsersController {
-  static register = async (req, res, next) => {
+  static async register(req, res, next) {
     try {
       const { password } = req.body;
       const hashedPassword = await bcrypt.hash(password, 12);
@@ -25,7 +25,7 @@ export class UsersController {
     }
   }
 
-  static login = async (req, res, next) => {
+  static async login(req, res, next) {
     try {
       const { email, password } = req.body;
   

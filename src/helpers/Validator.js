@@ -1,7 +1,7 @@
 import { isArray } from "util";
 
 export class Validator {
-  static validateId = (req, res, next) => {
+  static validateId(req, res, next) {
     const { id } = req.params;
     if(!Number.isInteger(id) || Number.parseInt(id, 10) <= 0) {
       return res.status(400)
@@ -12,7 +12,7 @@ export class Validator {
     next();
   }
 
-  static validateUser = (req, res, next) => {
+  static validateUser(req, res, next) {
     const { username, email, password } = req.body;
     if(!username || username.trim() === '') {
       return res.status(400)
@@ -41,7 +41,7 @@ export class Validator {
     next();
   }
 
-  static validateTaskObject = (task) => {
+  static validateTaskObject(task) {
     if(!task.name || task.name.trim() === '') {
       return {
         pass: false,
@@ -69,7 +69,7 @@ export class Validator {
     };
   }
 
-  static validateTodo = (req, res, next) => {
+  static validateTodo(req, res, next) {
     const { title, description, completed, scheduled_at, repeat, deleted, tasks } = req.body;
     if(!title || title.trim() === '') {
       return res.status(400)
@@ -135,7 +135,7 @@ export class Validator {
     next();
   }
 
-  static validateTasks = (req, res, next) => {
+  static validateTasks(req, res, next) {
     const tasks = [...req.body];
     if(!Array.isArray(tasks) || tasks.length < 1) {
       return res.status(400)
@@ -155,7 +155,7 @@ export class Validator {
     next();
   }
 
-  static validateTask = (req, res, next) => {
+  static validateTask(req, res, next) {
     const task = {...req.body};
     const check = Validator.validateTaskObject(task);
     if(!check.pass) {

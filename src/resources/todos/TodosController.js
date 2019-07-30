@@ -3,7 +3,7 @@ import { TasksModel as Tasks } from '../tasks/TasksModel';
 import { isArray, isObject } from 'util';
 
 export class TodosController {
-  static create = async (req, res, next) => {
+  static async create(req, res, next) {
     try {
       const { id } = req.user;
       let { tasks } = req.body;
@@ -32,7 +32,7 @@ export class TodosController {
     }
   }
 
-  static read = async (req, res, next) => {
+  static async read(req, res, next) {
     try {
       const { id } = req.params;
       const todos = id? await Todos.read(req.user.id, id) : await Todos.read(req.user.id);
@@ -57,7 +57,7 @@ export class TodosController {
     }
   }
 
-  static update = async (req, res, next) => {
+  static async update(req, res, next) {
     try {
       const updated = await Todos.update(req.params.id, req.body);
       if(updated && updated.id) {
@@ -76,7 +76,7 @@ export class TodosController {
     }
   }
 
-  static delete = async (req, res, next) => {
+  static async delete(req, res, next) {
     try {
       const deleted = await Todos.update(req.params.id, req.body);
       if(deleted && deleted.id) {
@@ -95,7 +95,7 @@ export class TodosController {
     }
   }
 
-  static addTodoTask = async (req, res, next) => {
+  static async addTodoTask(req, res, next) {
     try {
       const { id } = req.params;
       let rawTasks = req.body;

@@ -1,14 +1,14 @@
 import db from '../../data/dbConfig';
 
 export class TodosModel {
-  static create = (todo) => {
+  static create(todo) {
     return db('todos')
       .insert(todo)
       .returning('*')
       .first();
   }
 
-  static read = (user_id, id = null) => {
+  static read(user_id, id = null) {
     if(id) {
       return db('todos')
         .where({ user_id, id })
@@ -18,14 +18,14 @@ export class TodosModel {
       .where({ user_id });
   }
 
-  static update = (id, changes) => {
+  static update(id, changes) {
     return db('todos')
       .update(changes, '*')
       .where({ id })
       .first();
   }
 
-  static delete = (id) => {
+  static delete(id) {
     return db('todos')
       .delete()
       .where({ id })

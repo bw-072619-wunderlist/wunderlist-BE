@@ -2,7 +2,7 @@ import { TasksModel as Tasks } from './TasksModel';
 import { isArray } from 'util';
 
 export class TasksController {
-  static read = async (req, res, next) => {
+  static async read(req, res, next) {
     try {
       const { id } = req.params;
       const tasks = id? await Tasks.read(id) : await Tasks.read();
@@ -20,7 +20,7 @@ export class TasksController {
     }
   }
 
-  static update = async (req, res, next) => {
+  static async update(req, res, next) {
     try {
       const updated = await Tasks.update(req.params.id, req.body);
       if(updated && updated.name) {
@@ -39,7 +39,7 @@ export class TasksController {
     }
   }
 
-  static delete = async (req, res, next) => {
+  static async delete(req, res, next) {
     try {
       const deleted = await Tasks.delete(req.params.id);
       if(deleted && deleted.name) {
