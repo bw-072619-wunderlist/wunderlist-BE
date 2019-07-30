@@ -1,13 +1,22 @@
 
 exports.seed = function(knex) {
   // Deletes ALL existing entries
-  return knex('table_name').del()
+  return knex('shares').truncate()
     .then(function () {
       // Inserts seed entries
-      return knex('table_name').insert([
-        {id: 1, colName: 'rowValue1'},
-        {id: 2, colName: 'rowValue2'},
-        {id: 3, colName: 'rowValue3'}
+      return knex('shares').insert([
+        {
+          user_id: 2,
+          todo_id: 2
+        },
+        {
+          user_id: 3,
+          todo_id: 2
+        },
+        {
+          user_id: 4,
+          todo_id: 2
+        }
       ]);
     });
 };
