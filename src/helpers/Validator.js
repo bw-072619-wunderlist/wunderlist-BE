@@ -64,7 +64,7 @@ export class Validator {
   }
 
   static validateTodo = (req, res, next) => {
-    const { title, description, completed, scheduled_at, repeat, tasks } = req.body;
+    const { title, description, completed, scheduled_at, repeat, deleted, tasks } = req.body;
     if(!title || title.trim() === '') {
       return res.status(400)
         .json({
@@ -84,6 +84,14 @@ export class Validator {
         return res.status(400)
           .json({
             message: 'completed field can only hold boolean value'
+          });
+      }
+    }
+    if(deleted) {
+      if(deleted !== true && deleted !== false) {
+        return res.status(400)
+          .json({
+            message: 'deleted field can only hold boolean value'
           });
       }
     }
