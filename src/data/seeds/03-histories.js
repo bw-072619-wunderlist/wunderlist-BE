@@ -1,13 +1,31 @@
 
 exports.seed = function(knex) {
   // Deletes ALL existing entries
-  return knex('table_name').del()
+  return knex('histories').truncate()
     .then(function () {
       // Inserts seed entries
-      return knex('table_name').insert([
-        {id: 1, colName: 'rowValue1'},
-        {id: 2, colName: 'rowValue2'},
-        {id: 3, colName: 'rowValue3'}
+      return knex('histories').insert([
+        {
+          todo_id: 2, 
+          completed_at: '2019-07-20T12:07:00.777Z'
+        },
+        {
+          todo_id: 2
+        },
+        {
+          todo_id: 5, 
+          completed_at: '2019-07-20T12:07:00.777Z'
+        },
+        {
+          todo_id: 5
+        },
+        {
+          todo_id: 9, 
+          completed_at: '2019-07-20T12:07:00.777Z'
+        },
+        {
+          todo_id: 9
+        },
       ]);
     });
 };
