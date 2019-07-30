@@ -13,7 +13,13 @@ export class Validator {
   }
 
   static validateUser = (req, res, next) => {
-    const { email, password } = req.body;
+    const { username, email, password } = req.body;
+    if(!username || username.trim() === '') {
+      return res.status(400)
+        .json({
+          message: 'Missing required username field'
+        });
+    }
     if(!email || email.trim() === '') {
       return res.status(400)
         .json({
