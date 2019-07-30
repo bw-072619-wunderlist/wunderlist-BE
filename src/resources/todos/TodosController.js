@@ -78,11 +78,11 @@ export class TodosController {
 
   static delete = async (req, res, next) => {
     try {
-      const deleted = await Todos.delete(req.params.id);
+      const deleted = await Todos.update(req.params.id, req.body);
       if(deleted && deleted.id) {
         return res.status(200)
           .json({
-            message: 'Successful todo deletion',
+            message: 'Successful todo delete toggle',
             deleted
           });
       }
