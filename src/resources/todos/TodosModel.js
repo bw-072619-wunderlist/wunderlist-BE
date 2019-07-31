@@ -13,11 +13,11 @@ export class TodosModel {
         .where({ user_id, id })
         .first();
     }
-    /* return db('todos')
-      .where({ user_id }); */
-      return db('todos')
-        .select('*')
-        .leftJoin('histories', 'todos.id', 'histories.todo_id');
+    return db('todos')
+      .select('todos.id', 'user_id', 'title', 'description', 'scheduled_at', 'repeat', 'completed', 'deleted', 'created_at', 'updated_at', 'todo_id', 'completed_at')
+      .leftJoin('histories', 'todos.id', 'histories.todo_id')
+      .where({ user_id })
+      .orderBy('todos.id');
   }
 
   static update(id, changes) {
