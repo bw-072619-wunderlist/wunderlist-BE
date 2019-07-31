@@ -58,4 +58,14 @@ export class UsersController {
       next(error);
     }
   }
+
+  static async read(req, res, next) {
+    try {
+      const users = Users.read();
+        res.status(200)
+          .json(users);
+    } catch(error) {
+      next(error);
+    }
+  }
 }
