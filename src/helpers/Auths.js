@@ -1,11 +1,12 @@
 import jwt from 'jsonwebtoken';
+const secret = process.env.JWT_SECRET || 'shuy&@iwhqGSYHW8213TEB57';
 
 export class Auths {
   static authenticate(req, res, next) {
     const token = req.headers['authorization'];
 
     if (token) {
-      jwt.verify(token, 'WUE6nnw#j83-UWNJWGfsuj#*h', (err, decoded) => {
+      jwt.verify(token, secret, (err, decoded) => {
         if (err) return res.status(401).json({
           message: 'User not authenticated'
         });
