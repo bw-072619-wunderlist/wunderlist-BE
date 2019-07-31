@@ -1,19 +1,19 @@
 import db from '../../data/dbConfig';
 
 export class UsersModel {
-  static create = (user) => {
+  static create(user) {
     return db('users')
       .insert(user)
-      .returning('id', 'email');
+      .returning('*');
   }
 
-  static read = (email = null) => {
+  static read(email = null) {
     if(email) {
       return db('users')
         .where({ email })
         .first();
     }
     return db('users')
-      .select('id', 'email');
+      .select('id', 'username', 'email');
   }
 }

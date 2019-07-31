@@ -3,7 +3,7 @@ import { TasksModel as Tasks } from '../tasks/TasksModel';
 import { isArray, isObject } from 'util';
 
 export class TodosController {
-  static create = async (req, res, next) => {
+  static async create(req, res, next) {
     try {
       const { id } = req.user;
       let { tasks } = req.body;
@@ -18,13 +18,13 @@ export class TodosController {
       if(tasks) {
         tasks = tasks.map(task => ({
           ...task,
-          todo_id: todo.id
+          todo_id: todo[0].id
         }));
         tasksList = await Tasks.create(tasks);
       }
       res.status(201)
         .json({
-          ...todo,
+          ...todo[0],
           tasks: tasksList
         });
     } catch(error) {
@@ -32,7 +32,7 @@ export class TodosController {
     }
   }
 
-  static read = async (req, res, next) => {
+  static async read(req, res, next) {
     try {
       const { id } = req.params;
       const todos = id? await Todos.read(req.user.id, id) : await Todos.read(req.user.id);
@@ -57,14 +57,14 @@ export class TodosController {
     }
   }
 
-  static update = async (req, res, next) => {
+  static async update(req, res, next) {
     try {
       const updated = await Todos.update(req.params.id, req.body);
-      if(updated && updated.id) {
+      if(updated[0] && updated[0].id) {
         return res.status(200)
           .json({
             message: 'Successful todo update',
-            updated
+            updated: updated[0]
           });
       }
       res.status(404)
@@ -76,20 +76,36 @@ export class TodosController {
     }
   }
 
-  static delete = async (req, res, next) => {
+  static async delete(req, res, next) {
     try {
-      const deleted = await Todos.delete(req.params.id);
-      if(deleted && deleted.id) {
+      const deleted = await Todos.update(req.params.id, { deleted: true });
+      if(deleted[0] && deleted[0].id) {
         return res.status(200)
           .json({
-            message: 'Successful todo deletion',
-            deleted
+            message: 'Successful todo delete toggle',
+            deleted: deleted[0]
           });
       }
       res.status(404)
         .json({
           message: 'Todo with the supplied id does not exist'
         });
+    } catch(error) {
+      next(error);
+    }
+  }
+
+  static async addTodoTask(req, res, next) {
+    try {
+      const { id } = req.params;
+      let rawTasks = req.body;
+      rawTasks = rawTasks.map(task => ({
+        ...task,
+        todo_id: id
+      }));
+      const tasks = await Tasks.create(rawTasks);
+      res.status(201)
+        .json(tasks);
     } catch(error) {
       next(error);
     }

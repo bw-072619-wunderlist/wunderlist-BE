@@ -1,35 +1,35 @@
 import db from '../../data/dbConfig';
 
 export class TodosModel {
-  static create = (todo) => {
+  static create(todo) {
     return db('todos')
       .insert(todo)
-      .returning('*')
-      .first();
+      .returning('*');
   }
 
-  static read = (user_id, id = null) => {
+  static read(user_id, id = null) {
     if(id) {
       return db('todos')
         .where({ user_id, id })
         .first();
     }
-    return db('todos')
-      .where({ user_id });
+    /* return db('todos')
+      .where({ user_id }); */
+      return db('todos')
+        .select('*')
+        .leftJoin('histories', 'todos.id', 'histories.todo_id');
   }
 
-  static update = (id, changes) => {
+  static update(id, changes) {
     return db('todos')
       .update(changes, '*')
-      .where({ id })
-      .first();
+      .where({ id });
   }
 
-  static delete = (id) => {
+  static delete(id) {
     return db('todos')
       .delete()
       .where({ id })
-      .returning('*')
-      .first();
+      .returning('*');
   }
 }

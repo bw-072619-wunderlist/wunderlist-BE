@@ -2,8 +2,10 @@ import { UsersModel as Users } from './UsersModel';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
+const secret = process.env.JWT_SECRET || 'shuy&@iwhqGSYHW8213TEB57';
+
 export class UsersController {
-  static register = async (req, res, next) => {
+  static async register(req, res, next) {
     try {
       const { password } = req.body;
       const hashedPassword = await bcrypt.hash(password, 12);
@@ -12,20 +14,19 @@ export class UsersController {
         ...req.body,
         password: hashedPassword
       });
-      if(user && user.email) {
-        const token = jwt.sign(user, 'WUE6nnw#j83-UWNJWGfsuj#*h', { expiresIn: '1d' });
-        return res.status(201)
-          .json({
-            ...user,
-            token
-          });
-      }
+      delete user[0].password;
+      const token = jwt.sign({...user[0]}, secret, { expiresIn: '1d' });
+      return res.status(201)
+        .json({
+          ...user[0],
+          token
+        });
     } catch(error) {
       next(error);
     }
   }
 
-  static login = async (req, res, next) => {
+  static async login(req, res, next) {
     try {
       const { email, password } = req.body;
   
@@ -33,10 +34,11 @@ export class UsersController {
       if(user && user.email) {
         const isMatch = await bcrypt.compare(password, user.password);
         if(isMatch) {
-          const token = jwt.sign(user, 'WUE6nnw#j83-UWNJWGfsuj#*h', { expiresIn: '1d' });
+          const token = jwt.sign(user, secret, { expiresIn: '1d' });
           return res.status(201)
             .json({
               id: user.id,
+              username: user.username,
               email: user.email,
               token
             });

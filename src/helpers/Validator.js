@@ -1,9 +1,9 @@
 import { isArray } from "util";
 
 export class Validator {
-  static validateId = (req, res, next) => {
+  static validateId(req, res, next) {
     const { id } = req.params;
-    if(!Number.isInteger(id) || Number.parseInt(id, 10) <= 0) {
+    if(!RegExp(/^[0-9.]+$/).test(id)) {
       return res.status(400)
         .json({
           message: 'Invalid id in URL'
@@ -12,8 +12,14 @@ export class Validator {
     next();
   }
 
-  static validateUser = (req, res, next) => {
-    const { email, password } = req.body;
+  static validateUser(req, res, next) {
+    const { username, email, password } = req.body;
+    if(!username || username.trim() === '') {
+      return res.status(400)
+        .json({
+          message: 'Missing required username field'
+        });
+    }
     if(!email || email.trim() === '') {
       return res.status(400)
         .json({
@@ -35,7 +41,7 @@ export class Validator {
     next();
   }
 
-  static validateTaskObject = (task) => {
+  static validateTaskObject(task) {
     if(!task.name || task.name.trim() === '') {
       return {
         pass: false,
@@ -63,8 +69,8 @@ export class Validator {
     };
   }
 
-  static validateTodo = (req, res, next) => {
-    const { title, description, completed, scheduled_at, repeat, tasks } = req.body;
+  static validateTodo(req, res, next) {
+    const { title, description, completed, scheduled_at, repeat, deleted, tasks } = req.body;
     if(!title || title.trim() === '') {
       return res.status(400)
         .json({
@@ -87,6 +93,14 @@ export class Validator {
           });
       }
     }
+    if(deleted) {
+      if(deleted !== true && deleted !== false) {
+        return res.status(400)
+          .json({
+            message: 'deleted field can only hold boolean value'
+          });
+      }
+    }
     if(scheduled_at) {
       if(!RegExp(/^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d(?:\.\d+)?Z?$/).test(scheduled_at)) {
         return res.status(400)
@@ -103,25 +117,27 @@ export class Validator {
           });
       }
     }
-    if(!Array.isArray(tasks) || tasks.length < 1) {
-      return res.status(400)
-        .json({
-          message: 'tasks field cannot be empty list'
-        });
-    }
-    for(let i = 0; i < tasks.length; i++) {
-      const check = Validator.validateTaskObject(tasks[i]);
-      if(!check.pass) {
+    if(tasks) {
+      if(!Array.isArray(tasks) || tasks.length < 1) {
         return res.status(400)
           .json({
-            message: check.message
+            message: 'tasks field cannot be empty list'
           });
+      }
+      for(let i = 0; i < tasks.length; i++) {
+        const check = Validator.validateTaskObject(tasks[i]);
+        if(!check.pass) {
+          return res.status(400)
+            .json({
+              message: check.message
+            });
+        }
       }
     }
     next();
   }
 
-  static validateTasks = (req, res, next) => {
+  static validateTasks(req, res, next) {
     const tasks = [...req.body];
     if(!Array.isArray(tasks) || tasks.length < 1) {
       return res.status(400)
@@ -137,6 +153,18 @@ export class Validator {
             message: check.message
           });
       }
+    }
+    next();
+  }
+
+  static validateTask(req, res, next) {
+    const task = {...req.body};
+    const check = Validator.validateTaskObject(task);
+    if(!check.pass) {
+      return res.status(400)
+        .json({
+          message: check.message
+        });
     }
     next();
   }

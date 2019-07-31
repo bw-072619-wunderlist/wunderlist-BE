@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 
 export class Auths {
-  static authenticate = (req, res, next) => {
+  static authenticate(req, res, next) {
     const token = req.headers['authorization'];
 
     if (token) {
