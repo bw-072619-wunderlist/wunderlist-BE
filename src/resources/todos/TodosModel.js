@@ -65,4 +65,9 @@ export class TodosModel {
     }
     
   }
+
+  static shareTodo(share) {
+    return db('shares')
+      .insert(share, '*');
+  }
 }
