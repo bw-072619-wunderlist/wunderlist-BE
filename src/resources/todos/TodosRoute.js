@@ -12,6 +12,7 @@ router.use('/:id', Validator.validateId);
 router.post('/:id/tasks', Auths.authenticate, Validator.validateTasks, Todos.addTodoTask);
 router.get('/:id', Auths.authenticate, Todos.read);
 router.put('/:id', Auths.authenticate, Validator.validateTodo, Todos.update);
+router.put('/:id/users/:user_id', Auths.authenticate, Todos.shareTodo);
 router.delete('/:id', Auths.authenticate, Validator.validateTodo, Todos.delete);
 
 export default router;

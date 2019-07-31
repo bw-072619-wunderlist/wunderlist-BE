@@ -70,9 +70,9 @@ export class TodosController {
 
   static async shareTodo(req, res, next) {
     try {
-      const { todo_id, user_id } = req.params;
+      const { id, user_id } = req.params;
 
-      const shared = await Todos.shareTodo({todo_id, user_id});
+      const shared = await Todos.shareTodo({todo_id: id, user_id});
       return res.status(200)
         .json({
           message: 'Successful todo share',
