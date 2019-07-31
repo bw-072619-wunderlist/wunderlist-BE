@@ -35,7 +35,7 @@ export class UsersController {
         const isMatch = await bcrypt.compare(password, user.password);
         if(isMatch) {
           const token = jwt.sign(user, secret, { expiresIn: '1d' });
-          return res.status(201)
+          return res.status(200)
             .json({
               id: user.id,
               username: user.username,
