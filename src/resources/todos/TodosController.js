@@ -51,10 +51,12 @@ export class TodosController {
       }
       if(isObject(todos) && todos.id) {
         const tasks = await Tasks.read(todos.id);
+        const shares = await Todos.readShares(todos.id);
         return res.status(200)
           .json({
             ...todos,
-            tasks
+            tasks,
+            shares
           });
       }
       res.status(404)
