@@ -17,6 +17,14 @@ export class TodosModel {
       .where({ user_id });
   }
 
+  static readHistories(user_id) {
+    return db('todos')
+      .select('todo_id', 'completed_at')
+      .leftJoin('histories', 'todos.id', 'histories.todo_id')
+      .where({ user_id })
+      .orderBy('todo_id');
+  }
+
   static update(id, changes) {
     return db('todos')
       .update(changes, '*')
