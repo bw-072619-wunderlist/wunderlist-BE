@@ -68,10 +68,10 @@ export class TodosController {
 
   static async update(req, res, next) {
     try {
-      const { completed } = req.body;
+      const { completed, repeat } = req.body;
       const updated = await Todos.update(req.params.id, {...req.body, completed: false});
       if(updated[0] && updated[0].id) {
-        if(completed) {
+        if(completed && repeat && repeat !== 'no-repeat') {
           await Todos.insertHistory({todo_id: req.params.id});
         }
         return res.status(200)
