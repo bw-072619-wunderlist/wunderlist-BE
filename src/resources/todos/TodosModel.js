@@ -37,11 +37,10 @@ export class TodosModel {
       .where({ id });
   }
 
-  static delete(id) {
+  static delete() {
     return db('todos')
       .delete()
-      .where({ id })
-      .returning('*');
+      .whereRaw("deleted = true AND now() < updated_at::date + '7 day'::interval");
   }
 
   static repeatTodos(repeat = 'daily') {
