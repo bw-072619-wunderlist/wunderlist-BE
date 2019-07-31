@@ -23,6 +23,11 @@ export class TodosModel {
       .where({ user_id });
   }
 
+  static readShares(todo_id) {
+    return db('shares')
+      .where({ todo_id });
+  }
+
   static readHistories(user_id) {
     return db('todos')
       .select('todo_id', 'completed_at')
