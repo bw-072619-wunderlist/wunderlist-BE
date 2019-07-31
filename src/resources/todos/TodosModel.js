@@ -21,7 +21,9 @@ export class TodosModel {
     return db('todos')
       .where({ user_id })
       .orWhereIn('id', function() {
-        this.select('todo_id').from('shares');
+        this.select('todo_id')
+          .from('shares')
+          .where({ user_id });
       });
   }
 
