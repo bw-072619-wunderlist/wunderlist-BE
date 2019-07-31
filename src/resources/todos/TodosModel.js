@@ -7,6 +7,11 @@ export class TodosModel {
       .returning('*');
   }
 
+  static insertHistory(history) {
+    return db('histories')
+      .insert(history);
+  }
+
   static read(user_id, id = null) {
     if(id) {
       return db('todos')
