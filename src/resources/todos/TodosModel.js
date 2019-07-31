@@ -19,7 +19,10 @@ export class TodosModel {
         .first();
     }
     return db('todos')
-      .where({ user_id });
+      .where({ user_id })
+      .orWhereIn('id', function() {
+        this.select('todo_id').from('shares');
+      });
   }
 
   static readShares(todo_id) {
