@@ -15,7 +15,7 @@ export class TodosModel {
   static read(user_id, id = null) {
     if(id) {
       return db('todos')
-        .where({ user_id, id })
+        .where({ id })
         .first();
     }
     return db('todos')
