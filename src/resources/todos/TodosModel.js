@@ -1,5 +1,4 @@
 import db from '../../data/dbConfig';
-import moment from 'moment';
 
 export class TodosModel {
   static create(todo) {
@@ -25,6 +24,8 @@ export class TodosModel {
 
   static readShares(todo_id) {
     return db('shares')
+      .select('todo_id', 'username')
+      .join('users', 'user_id', 'users.id')
       .where({ todo_id });
   }
 
