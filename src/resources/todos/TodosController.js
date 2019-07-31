@@ -35,8 +35,17 @@ export class TodosController {
   static async read(req, res, next) {
     try {
       const { id } = req.params;
-      const todos = id? await Todos.read(req.user.id, id) : await Todos.read(req.user.id);
-      if(isArray(todos) && todos.length > 0) {
+      let todos = id? await Todos.read(req.user.id, id) : await Todos.read(req.user.id);
+      if(isArray(todos)) { 
+        if(todos.length < 1) {
+          return res.status(200)
+            .json(todos);
+        }
+        const histories = await Todos.readHistories(req.user.id);
+        todos = todos.map(todo => {
+          todo.histories = histories.filter(item => item.todo_id === todo.id);
+          return todo;
+        });
         return res.status(200)
           .json(todos);
       }
