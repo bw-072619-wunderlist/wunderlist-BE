@@ -75,4 +75,15 @@ describe('auths', () => {
       });
   });
 
+  it('[POST] /auths/login WORKS', () => {
+
+    return request(server)
+      .post('/api/v2/auths/login')
+      .send({ email: 'eneh@abc.co', password: '1234' })
+      .expect(200)
+      .then(res => {
+        expect(res.body).toBeInstanceOf(Object);
+      });
+  });
+
 });
