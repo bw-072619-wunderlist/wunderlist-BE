@@ -14,6 +14,6 @@ export class UsersModel {
         .first();
     }
     return db('users')
-      .select('id', 'username', 'email');
+      .select('id', 'username', 'email', 'avatar', 'notify');
   }
 }
