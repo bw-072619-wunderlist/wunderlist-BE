@@ -40,6 +40,8 @@ export class UsersController {
               id: user.id,
               username: user.username,
               email: user.email,
+              avatar: user.avatar,
+              notify: user.notify,
               token
             });
         } else {
