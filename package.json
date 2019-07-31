@@ -9,7 +9,11 @@
     "dev": "NODE_ENV=development npm-run-all server",
     "clean": "rimraf dist",
     "build": "babel ./src --out-dir dist",
-    "watch": "nodemon"
+    "watch": "nodemon",
+    "test": "cross-env DB_ENV=testing jest --watch --verbose"
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "repository": {
     "type": "git",
