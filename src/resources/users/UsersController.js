@@ -61,7 +61,7 @@ export class UsersController {
 
   static async read(req, res, next) {
     try {
-      const users = Users.read();
+      const users = await Users.read();
         res.status(200)
           .json(users);
     } catch(error) {
