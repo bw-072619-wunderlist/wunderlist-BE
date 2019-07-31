@@ -1,13 +1,19 @@
-import { isArray } from "util";
-
 export class Validator {
   static validateId(req, res, next) {
-    const { id } = req.params;
+    const { id, user_id } = req.params;
     if(!RegExp(/^[0-9.]+$/).test(id)) {
       return res.status(400)
         .json({
           message: 'Invalid id in URL'
         });
+    }
+    if(user_id) {
+      if(!RegExp(/^[0-9.]+$/).test(user_id)) {
+        return res.status(400)
+          .json({
+            message: 'Invalid user id in URL'
+          });
+      }
     }
     next();
   }
