@@ -10,7 +10,7 @@
     "clean": "rimraf dist",
     "build": "babel ./src --out-dir dist",
     "watch": "nodemon",
-    "test": "cross-env DB_ENV=testing nyc --reporter=html --reporter=text --reporter=lcov jest --watch --verbose",
+    "test": "cross-env DB_ENV=testing nyc --reporter=html --reporter=text --reporter=lcov jest --verbose --forceExit",
     "coverage": "jest --coverage && cat ./tests/coverage/lcov.info | coveralls"
   },
   "jest": {
