@@ -2,13 +2,6 @@ import db from '../../data/dbConfig';
 import server from '../server';
 import request from 'supertest';
 
-beforeEach(async () => {
-  await db('shares').truncate();
-  await db('histories').truncate();
-  await db('tasks').truncate();
-  await db.raw('truncate todos cascade');
-});
-
 beforeAll(async () => {
   await db.raw('truncate users cascade');
 });
