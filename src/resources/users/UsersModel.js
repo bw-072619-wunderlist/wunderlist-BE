@@ -17,6 +17,12 @@ export class UsersModel {
       .select('id', 'username', 'email', 'avatar', 'notify');
   }
 
+  static update(id, changes) {
+    return db('users')
+      .update(changes, '*')
+      .where({ id });
+  }
+
   static getNotificationsInfo() {
     return db('users')
       .select('username', 'email', 'title', 'scheduled_at')
