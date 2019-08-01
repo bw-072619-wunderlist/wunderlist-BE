@@ -11,7 +11,7 @@
     "build": "babel ./src --out-dir dist",
     "watch": "nodemon",
     "test": "cross-env DB_ENV=testing nyc --reporter=html --reporter=text --reporter=lcov jest --watch --verbose",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "coverage": "jest --coverage && cat ./tests/coverage/lcov.info | coveralls"
   },
   "jest": {
     "testEnvironment": "node"
