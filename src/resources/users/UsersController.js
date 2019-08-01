@@ -104,4 +104,23 @@ export class UsersController {
       next(error);
     }
   }
+
+  static async update(req, res, next) {
+    try {
+      delete req.body.email;
+      delete req.body.password;
+      const changes = await Users.update(req.user.id, req.body);
+
+      return res.status(200)
+        .json({
+          id: changes[0].id,
+          username: changes[0].username,
+          email: changes[0].email,
+          avatar: changes[0].avatar,
+          notify: changes[0].notify
+        });
+    } catch(error) {
+      next(error);
+    }
+  }
 }
