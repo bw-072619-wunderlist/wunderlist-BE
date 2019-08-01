@@ -142,4 +142,13 @@ describe('users', () => {
         expect(res.body).toBeInstanceOf(Object);
       });
   });
+  it('[GET] /users WORKS', () => {
+      return request(server)
+      .get('/api/v2/users')
+      .set('Authorization', `${token}`)
+      .expect(200)
+      .then(res => {
+        expect(res.body).toBeInstanceOf(Object);
+      });
+  });
 });
