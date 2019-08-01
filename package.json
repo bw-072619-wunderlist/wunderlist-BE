@@ -10,7 +10,8 @@
     "clean": "rimraf dist",
     "build": "babel ./src --out-dir dist",
     "watch": "nodemon",
-    "test": "cross-env DB_ENV=testing jest --watch --verbose"
+    "test": "cross-env DB_ENV=testing nyc --reporter=html --reporter=text --reporter=lcov jest --watch --verbose",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "jest": {
     "testEnvironment": "node"
@@ -50,12 +51,15 @@
     "@babel/plugin-transform-runtime": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "babel-jest": "^24.8.0",
+    "coveralls": "^3.0.5",
     "cross-env": "^5.2.0",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.2.0",
     "eslint-plugin-import": "^2.18.2",
+    "istanbul": "^0.4.5",
     "jest": "^24.8.0",
     "nodemon": "^1.19.1",
+    "nyc": "^14.1.1",
     "supertest": "^4.0.2"
   }
 }
