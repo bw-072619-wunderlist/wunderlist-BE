@@ -24,4 +24,16 @@ export default class Utilities {
       }
     });
   }
+
+  static sendMessage(info) {
+    const msgConfig = {
+      from: "WunderList 2.0 - wunderlistv2@gmail.com",
+      to: info.email,
+      subject: info.subject,
+      text: info.text,
+    };
+    transporter.sendMail(msgConfig, (error, info) => {
+        // Silence
+    });
+  }
 }
