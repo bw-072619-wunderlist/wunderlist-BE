@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post('/auths/register', Validator.validateUser, Users.register);
 router.post('/auths/login', Users.login);
-router.put('/auths/reset', Users.resetAuthInfo);
+router.put('/auths/reset', Users.update);
 
 router.get('/users', Auths.authenticate, Users.read);
 router.put('/users', Auths.authenticate, Users.update);
