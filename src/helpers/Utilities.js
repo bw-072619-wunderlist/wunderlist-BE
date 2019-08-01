@@ -1,5 +1,6 @@
 import cron from 'node-cron';
 import { TodosModel as Todos } from '../resources/todos/TodosModel';
+import { UsersModel as Users } from '../resources/users/UsersModel';
 import mailer from 'nodemailer';
 
 const transporter = mailer.createTransport({
@@ -19,6 +20,23 @@ export default class Utilities {
         await Todos.repeatTodos('monthly');
 
         await Todos.delete();
+      } catch(error) {
+        //silence
+      }
+    });
+
+    cron.schedule('0 * * * *', async () => {
+      try {
+        const usersInfo = await Users.getNotificationsInfo();
+        if(usersInfo && usersInfo.length > 0) {
+          usersInfo.forEach(userInfo => {
+            Utilities.sendMessage({
+              email: userInfo.email,
+              subject: `Todo Reminder for ${userInfo.username.toUpperCase()}`,
+              text: `${userInfo.title}, is due for your action... Keep it rolling!`
+            });
+          });
+        }
       } catch(error) {
         //silence
       }
