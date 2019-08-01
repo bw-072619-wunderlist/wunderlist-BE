@@ -87,7 +87,7 @@ describe('auths', () => {
       .send({ email: 'eneh@abc.co', password: '1234' })
       .expect(200)
       .then(res => {
-        token = res.token;
+        token = res.body.token;
         expect(res.body).toBeInstanceOf(Object);
       });
   });
@@ -132,19 +132,14 @@ describe('auths', () => {
 });
 
 describe('users', () => {
-  it('[PUT] /users WORKS', async () => {
-    try {
-      const access = await request(server)
-      .put('/api/v2/auths/reset')
-      .send({ email: 'eneh@abc.co', password: '1234' });
-
-      const res = await request(server)
+  it('[PUT] /users WORKS', () => {
+      return request(server)
       .put('/api/v2/users')
       .send({ username: 'james' })
       .set('Authorization', `${token}`)
-      .expect(200);
-
-      expect(res.body).toBeInstanceOf(Object);
-    } catch(err) {}
+      .expect(200)
+      .then(res => {
+        expect(res.body).toBeInstanceOf(Object);
+      });
   });
 });
