@@ -35,11 +35,13 @@ export class UsersController {
         const isMatch = await bcrypt.compare(password, user.password);
         if(isMatch) {
           const token = jwt.sign(user, secret, { expiresIn: '1d' });
-          return res.status(201)
+          return res.status(200)
             .json({
               id: user.id,
               username: user.username,
               email: user.email,
+              avatar: user.avatar,
+              notify: user.notify,
               token
             });
         } else {
@@ -54,6 +56,16 @@ export class UsersController {
             message: 'Invalid login credentials'
           });
       }
+    } catch(error) {
+      next(error);
+    }
+  }
+
+  static async read(req, res, next) {
+    try {
+      const users = await Users.read();
+        res.status(200)
+          .json(users);
     } catch(error) {
       next(error);
     }

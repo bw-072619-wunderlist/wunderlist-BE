@@ -1,6 +1,5 @@
 export default class ErrorHandler {
   static handleError(error, req, res, next) {
-    console.log(error);
     if(error.code === '23505') {
       if(error.detail.includes('title')) {
         return res.status(400)

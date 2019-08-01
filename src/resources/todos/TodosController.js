@@ -35,17 +35,28 @@ export class TodosController {
   static async read(req, res, next) {
     try {
       const { id } = req.params;
-      const todos = id? await Todos.read(req.user.id, id) : await Todos.read(req.user.id);
-      if(isArray(todos) && todos.length > 0) {
+      let todos = id? await Todos.read(req.user.id, id) : await Todos.read(req.user.id);
+      if(isArray(todos)) { 
+        if(todos.length < 1) {
+          return res.status(200)
+            .json(todos);
+        }
+        const histories = await Todos.readHistories(req.user.id);
+        todos = todos.map(todo => {
+          todo.histories = histories.filter(item => item.todo_id === todo.id);
+          return todo;
+        });
         return res.status(200)
           .json(todos);
       }
       if(isObject(todos) && todos.id) {
         const tasks = await Tasks.read(todos.id);
+        const shares = await Todos.readShares(todos.id);
         return res.status(200)
           .json({
             ...todos,
-            tasks
+            tasks,
+            shares
           });
       }
       res.status(404)
@@ -57,10 +68,29 @@ export class TodosController {
     }
   }
 
+  static async shareTodo(req, res, next) {
+    try {
+      const { id, user_id } = req.params;
+
+      const shared = await Todos.shareTodo({todo_id: id, user_id});
+      return res.status(200)
+        .json({
+          message: 'Successful todo share',
+          data: shared[0]
+        });
+    } catch(error) {
+      next(error);
+    }
+  }
+
   static async update(req, res, next) {
     try {
-      const updated = await Todos.update(req.params.id, req.body);
+      const { completed, repeat } = req.body;
+      const updated = await Todos.update(req.params.id, {...req.body, completed: false});
       if(updated[0] && updated[0].id) {
+        if(completed && repeat && repeat !== 'no-repeat') {
+          await Todos.insertHistory({todo_id: req.params.id});
+        }
         return res.status(200)
           .json({
             message: 'Successful todo update',

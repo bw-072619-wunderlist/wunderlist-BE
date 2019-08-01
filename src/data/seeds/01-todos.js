@@ -11,7 +11,7 @@ exports.seed = function(knex) {
       user_id: 1,
       title: 'My daily routine',
       description: 'Vis ad maluisset reformidans, eum ne dolorum interpretaris. Nec mucius expetenda salutatus in, ex eligendi delicata mnesarchum cum, mei indoctum necessitatibus ea.',
-      scheduled_at: '2019-08-07T07:07:07.357Z',
+      scheduled_at: '2019-07-30T07:07:07.357Z',
       repeat: 'daily'
     },
     {
