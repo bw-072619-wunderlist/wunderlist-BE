@@ -13,6 +13,6 @@ router.post('/:id/tasks', Auths.authenticate, Validator.validateTasks, Todos.add
 router.get('/:id', Auths.authenticate, Todos.read);
 router.put('/:id', Auths.authenticate, Validator.validateTodo, Todos.update);
 router.put('/:id/users/:user_id', Auths.authenticate, Todos.shareTodo);
-router.delete('/:id', Auths.authenticate, Validator.validateTodo, Todos.delete);
+router.delete('/:id', Auths.authenticate, Todos.delete);
 
 export default router;
