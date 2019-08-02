@@ -12,6 +12,11 @@ server.use(helmet());
 server.use(cors());
 server.use(express.json());
 
+server.get('/', (req, res) => {
+  res.status(200)
+    .json('Welcome! WunderList 2.0 API Service..');
+});
+
 server.use('/api/v2', UsersRoute);
 server.use('/api/v2/todos', TodosRoute);
 server.use('/api/v2/tasks', TasksRoute);
