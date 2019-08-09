@@ -3,7 +3,7 @@ const secret = process.env.JWT_SECRET || 'shuy&@iwhqGSYHW8213TEB57';
 
 export class Auths {
   static authenticate(req, res, next) {
-    const token = req.headers['authorization'];
+    const token = req.headers['authorization'] || 'traped';
 
     if (token) {
       jwt.verify(token, secret, (err, decoded) => {

@@ -59,18 +59,27 @@ export class TodosModel {
     switch(repeat) {
       case 'daily':
         return db('todos')
-          .update({scheduled_at: nextSchedule})
-          .whereRaw("repeat != 'no-repeat' AND now() < scheduled_at::date + '1 day'::interval");
+          .update({
+            scheduled_at: nextSchedule, 
+            completed: false
+          })
+          .whereRaw("repeat = 'daily' AND now() < scheduled_at::date + '1 day'::interval");
       case 'weekly':
         nextSchedule = new Date(new Date().setDate(new Date().getDate() + 7)).toISOString();
         return db('todos')
-          .update({scheduled_at: nextSchedule})
-          .whereRaw("repeat != 'no-repeat' AND now() < scheduled_at::date + '7 day'::interval");
+          .update({
+            scheduled_at: nextSchedule, 
+            completed: false
+          })
+          .whereRaw("repeat = 'weekly' AND now() < scheduled_at::date + '7 day'::interval");
       case 'monthly':
         nextSchedule = new Date(new Date().setDate(new Date().getDate() + 30)).toISOString();
         return db('todos')
-          .update({scheduled_at: nextSchedule})
-          .whereRaw("repeat != 'no-repeat' AND now() < scheduled_at::date + '30 day'::interval");
+          .update({
+            scheduled_at: nextSchedule, 
+            completed: false
+          })
+          .whereRaw("repeat = 'monthly' AND now() < scheduled_at::date + '30 day'::interval");
       default:
         return null;
     }

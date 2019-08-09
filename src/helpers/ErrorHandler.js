@@ -1,5 +1,16 @@
 export default class ErrorHandler {
   static handleError(error, req, res, next) {
+    if(error.code === '23503') {
+      if(error.detail.includes('todo_id')) {
+        return res.status(404)
+          .json({ message: 'todo with the supplied id does not exist' });
+      }
+      if(error.detail.includes('user_id')) {
+        return res.status(404)
+          .json({ message: 'user with the supplied id does not exist' });
+      }
+    }
+
     if(error.code === '23505') {
       if(error.detail.includes('title')) {
         return res.status(400)

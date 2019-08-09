@@ -61,6 +61,51 @@ export class UsersController {
     }
   }
 
+  static async update(req, res, next) {
+    try {
+      let changes;
+      if(req.path === '/auths/reset') {
+        const { email, newEmail, password, newPassword } = req.body;
+  
+        const user = await Users.read(email);
+        if(user && user.email) {
+          const isMatch = await bcrypt.compare(password, user.password);
+          if(isMatch) {
+            changes = {
+              password: newPassword? bcrypt.hashSync(newPassword, 12) : user.password,
+              email: newEmail || email
+            }
+            changes = await Users.update(user.id, changes);
+          } else {
+            return res.status(400)
+              .json({
+                message: 'Invalid credentials'
+              });
+          }
+        } else {
+          return res.status(400)
+            .json({
+              message: 'Invalid credentials'
+            });
+        }
+      } else {
+        delete req.body.email;
+        delete req.body.password;
+        changes = await Users.update(req.user.id, req.body);
+      }
+      return res.status(200)
+        .json({
+          id: changes[0].id,
+          username: changes[0].username,
+          email: changes[0].email,
+          avatar: changes[0].avatar,
+          notify: changes[0].notify
+        });
+    } catch(error) {
+      next(error);
+    }
+  }
+
   static async read(req, res, next) {
     try {
       const users = await Users.read();

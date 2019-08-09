@@ -16,4 +16,17 @@ export class UsersModel {
     return db('users')
       .select('id', 'username', 'email', 'avatar', 'notify');
   }
+
+  static update(id, changes) {
+    return db('users')
+      .update(changes, '*')
+      .where({ id });
+  }
+
+  static getNotificationsInfo() {
+    return db('users')
+      .select('username', 'email', 'title', 'scheduled_at')
+      .join('todos', 'users.id', 'user_id')
+      .whereRaw("notify = true AND repeat != 'no-repeat' AND scheduled_at::date - '5 hour'::interval <= now()");
+  }
 }

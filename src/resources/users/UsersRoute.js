@@ -5,8 +5,11 @@ import { Auths } from '../../helpers/Auths';
 
 const router = express.Router();
 
-router.post('/register', Validator.validateUser, Users.register);
-router.post('/login', Users.login);
+router.post('/auths/register', Validator.validateUser, Users.register);
+router.post('/auths/login', Users.login);
+router.put('/auths/reset', Users.update);
+
 router.get('/users', Auths.authenticate, Users.read);
+router.put('/users', Auths.authenticate, Users.update);
 
 export default router;
