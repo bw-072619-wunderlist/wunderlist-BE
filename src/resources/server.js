@@ -16,6 +16,10 @@ server.get('/', (req, res) => {
   res.status(200)
     .json('Welcome! WunderList 2.0 API Service..');
 });
+server.post('/', (req, res) => {
+  res.status(200)
+    .json('Awesome... Done!');
+});
 
 server.use('/api/v2', UsersRoute);
 server.use('/api/v2/todos', TodosRoute);
